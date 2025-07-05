@@ -25,7 +25,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.version_checker
+        package: com.smartfingers.version_checker
         pluginClass: VersionCheckerPlugin
       ios:
         pluginClass: VersionCheckerPlugin

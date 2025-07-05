@@ -1,4 +1,4 @@
-package com.example.version_checker
+package com.smartfingers.version_checker
 
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
