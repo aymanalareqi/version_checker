@@ -16,6 +16,7 @@ A comprehensive Flutter plugin for checking app version updates with customizabl
 📱 **Cross Platform** - Supports iOS and Android
 ⚡ **Caching Support** - Built-in response caching for better performance
 🎯 **Force Updates** - Support for mandatory app updates
+🔗 **URL Launching** - Direct users to app stores with platform-specific handling
 🛠️ **Error Handling** - Comprehensive error handling with retry functionality
 
 ## Installation

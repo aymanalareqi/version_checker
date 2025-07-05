@@ -10,6 +10,7 @@ import 'services/version_checker_service.dart';
 import 'widgets/update_dialog.dart';
 import 'widgets/force_update_dialog.dart';
 import 'widgets/error_dialog.dart';
+import 'utils/url_launcher_helper.dart';
 
 /// Callback function for version check results.
 ///
@@ -264,7 +265,11 @@ class VersionChecker {
         config: config.forceUpdateDialogConfig,
         onUpdate: () {
           onUpdatePressed?.call();
-          _launchStore(response.downloadUrl);
+          _launchStore(
+            response.downloadUrl,
+            context: context,
+            showFeedback: true,
+          );
         },
       );
     } else {
@@ -274,7 +279,11 @@ class VersionChecker {
         config: config.updateDialogConfig,
         onUpdate: () {
           onUpdatePressed?.call();
-          _launchStore(response.downloadUrl);
+          _launchStore(
+            response.downloadUrl,
+            context: context,
+            showFeedback: true,
+          );
         },
         onLater: onLaterPressed,
         onDismiss: onDismissed,
@@ -282,17 +291,42 @@ class VersionChecker {
     }
   }
 
-  /// Launch app store or download URL
-  Future<void> _launchStore(String? downloadUrl) async {
-    if (downloadUrl == null) return;
+  /// Launch app store or download URL with comprehensive error handling
+  ///
+  /// This method uses the UrlLauncherHelper to:
+  /// - Validate the download URL
+  /// - Show user feedback during launch
+  /// - Handle platform-specific app store URLs
+  /// - Provide error handling with user-friendly messages
+  ///
+  /// Parameters:
+  /// - [downloadUrl]: The URL to launch (app store or web URL)
+  /// - [context]: Build context for showing user feedback (optional)
+  /// - [showFeedback]: Whether to show loading/success/error feedback
+  Future<void> _launchStore(
+    String? downloadUrl, {
+    BuildContext? context,
+    bool showFeedback = true,
+  }) async {
+    if (downloadUrl == null || downloadUrl.isEmpty) {
+      return;
+    }
 
-    try {
-      // For now, we'll just print the URL
-      // In a real implementation, you would use url_launcher package
-      print('Opening URL: $downloadUrl');
-      // TODO: Implement actual URL launching
-    } catch (e) {
-      // Handle launch error silently or log it
+    if (context != null && showFeedback) {
+      // Launch with full UI feedback
+      await UrlLauncherHelper.launchUpdateUrl(
+        context: context,
+        downloadUrl: downloadUrl,
+        onSuccess: () {
+          // Optional: Add analytics or logging here
+        },
+        onError: (error) {
+          // Optional: Add error analytics or logging here
+        },
+      );
+    } else {
+      // Launch silently without UI feedback
+      await UrlLauncherHelper.launchUrlSilently(downloadUrl);
     }
   }
 

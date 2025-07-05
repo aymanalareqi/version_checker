@@ -28,6 +28,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Custom placeholder support via `customPlaceholders` map
   - Localization support with custom text formatting
   - Specialized formatting methods for different dialog types
+- 🔗 **URL Launching** - Complete URL launching functionality for app store navigation
+  - UrlLauncherHelper utility class with comprehensive error handling
+  - Platform-specific app store URL handling (iOS App Store, Google Play Store)
+  - User feedback mechanisms with loading indicators and success/error messages
+  - Robust error handling with user-friendly error messages
+  - Silent URL launching option for background operations
+  - Platform store URL generation utilities
 
 ### Enhanced
 - 📱 **Example App** - Added comprehensive demonstrations
