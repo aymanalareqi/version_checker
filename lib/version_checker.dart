@@ -10,3 +10,4 @@ export 'src/widgets/force_update_dialog.dart';
 export 'src/widgets/error_dialog.dart';
 export 'src/services/version_checker_service.dart';
 export 'src/utils/version_comparator.dart';
+export 'src/utils/text_formatter.dart';

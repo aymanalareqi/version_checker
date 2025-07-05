@@ -156,6 +156,165 @@ class DialogConfig {
   /// If both [shape] and [borderRadius] are provided, [shape] takes precedence.
   final ShapeBorder? shape;
 
+  // Text Customization Properties
+
+  /// Custom text for displaying current version
+  ///
+  /// Supports placeholder substitution with variables like {currentVersion}.
+  /// Default: "Current: {currentVersion}"
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   currentVersionText: 'Your version: {currentVersion}',
+  /// )
+  /// ```
+  final String? currentVersionText;
+
+  /// Custom text for displaying latest version
+  ///
+  /// Supports placeholder substitution with variables like {latestVersion}.
+  /// Default: "Latest: {latestVersion}"
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   latestVersionText: 'New version: {latestVersion}',
+  /// )
+  /// ```
+  final String? latestVersionText;
+
+  /// Custom text for update available message
+  ///
+  /// Supports placeholder substitution with variables like {currentVersion}, {latestVersion}.
+  /// Default: "A new version is available!"
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   updateAvailableText: 'Update from {currentVersion} to {latestVersion}',
+  /// )
+  /// ```
+  final String? updateAvailableText;
+
+  /// Custom text for mandatory update message
+  ///
+  /// Supports placeholder substitution with variables like {latestVersion}.
+  /// Default: "This version is no longer supported."
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   forceUpdateText: 'Please update to {latestVersion} to continue.',
+  /// )
+  /// ```
+  final String? forceUpdateText;
+
+  /// Custom text for error scenarios
+  ///
+  /// Supports placeholder substitution with variables like {error}.
+  /// Default: "Unable to check for updates"
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   errorText: 'Update check failed: {error}',
+  /// )
+  /// ```
+  final String? errorText;
+
+  /// Custom title for release notes section
+  ///
+  /// Default: "What's New:"
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   releaseNotesTitle: 'New Features:',
+  /// )
+  /// ```
+  final String? releaseNotesTitle;
+
+  /// Custom text for download size display
+  ///
+  /// Supports placeholder substitution with variables like {downloadSize}.
+  /// Default: "Download size: {downloadSize}"
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   downloadSizeText: 'Size: {downloadSize}',
+  /// )
+  /// ```
+  final String? downloadSizeText;
+
+  /// Custom text for last checked timestamp
+  ///
+  /// Supports placeholder substitution with variables like {lastChecked}.
+  /// Default: "Last checked: {lastChecked}"
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   lastCheckedText: 'Checked: {lastChecked}',
+  /// )
+  /// ```
+  final String? lastCheckedText;
+
+  /// Custom text for force update requirement message
+  ///
+  /// Supports placeholder substitution with variables like {latestVersion}.
+  /// Default: "Please update to version {latestVersion} to continue using the app."
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   forceUpdateRequirementText: 'Version {latestVersion} is required.',
+  /// )
+  /// ```
+  final String? forceUpdateRequirementText;
+
+  /// Custom text for error details label
+  ///
+  /// Default: "Error Details:"
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   errorDetailsText: 'Technical Details:',
+  /// )
+  /// ```
+  final String? errorDetailsText;
+
+  /// Custom text for connection error message
+  ///
+  /// Default: "Please check your internet connection and try again."
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   connectionErrorText: 'Check your network and retry.',
+  /// )
+  /// ```
+  final String? connectionErrorText;
+
+  /// Custom placeholders for text substitution
+  ///
+  /// Additional key-value pairs for custom placeholder replacement.
+  /// These will be applied to all text properties that support placeholders.
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   customPlaceholders: {
+  ///     'appName': 'MyApp',
+  ///     'supportEmail': 'support@myapp.com',
+  ///   },
+  ///   updateAvailableText: 'New {appName} version available!',
+  /// )
+  /// ```
+  final Map<String, String>? customPlaceholders;
+
   const DialogConfig({
     this.title,
     this.message,
@@ -177,6 +336,19 @@ class DialogConfig {
     this.iconColor,
     this.iconSize,
     this.shape,
+    // Text customization properties
+    this.currentVersionText,
+    this.latestVersionText,
+    this.updateAvailableText,
+    this.forceUpdateText,
+    this.errorText,
+    this.releaseNotesTitle,
+    this.downloadSizeText,
+    this.lastCheckedText,
+    this.forceUpdateRequirementText,
+    this.errorDetailsText,
+    this.connectionErrorText,
+    this.customPlaceholders,
   });
 
   /// Create a copy with modified fields
@@ -203,6 +375,19 @@ class DialogConfig {
     Color? iconColor,
     double? iconSize,
     ShapeBorder? shape,
+    // Text customization properties
+    String? currentVersionText,
+    String? latestVersionText,
+    String? updateAvailableText,
+    String? forceUpdateText,
+    String? errorText,
+    String? releaseNotesTitle,
+    String? downloadSizeText,
+    String? lastCheckedText,
+    String? forceUpdateRequirementText,
+    String? errorDetailsText,
+    String? connectionErrorText,
+    Map<String, String>? customPlaceholders,
   }) {
     return DialogConfig(
       title: title ?? this.title,
@@ -226,6 +411,20 @@ class DialogConfig {
       iconColor: iconColor ?? this.iconColor,
       iconSize: iconSize ?? this.iconSize,
       shape: shape ?? this.shape,
+      // Text customization properties
+      currentVersionText: currentVersionText ?? this.currentVersionText,
+      latestVersionText: latestVersionText ?? this.latestVersionText,
+      updateAvailableText: updateAvailableText ?? this.updateAvailableText,
+      forceUpdateText: forceUpdateText ?? this.forceUpdateText,
+      errorText: errorText ?? this.errorText,
+      releaseNotesTitle: releaseNotesTitle ?? this.releaseNotesTitle,
+      downloadSizeText: downloadSizeText ?? this.downloadSizeText,
+      lastCheckedText: lastCheckedText ?? this.lastCheckedText,
+      forceUpdateRequirementText:
+          forceUpdateRequirementText ?? this.forceUpdateRequirementText,
+      errorDetailsText: errorDetailsText ?? this.errorDetailsText,
+      connectionErrorText: connectionErrorText ?? this.connectionErrorText,
+      customPlaceholders: customPlaceholders ?? this.customPlaceholders,
     );
   }
 

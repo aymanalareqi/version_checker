@@ -340,6 +340,81 @@ final fullyCustomConfig = DialogConfig(
 );
 ```
 
+### Text Customization
+
+Customize all text elements in dialogs with dynamic placeholder substitution:
+
+#### Dynamic Text with Placeholders
+
+```dart
+final textCustomConfig = DialogConfig(
+  title: 'Update {appName}',
+  message: 'Ready to upgrade your experience?',
+  positiveButtonText: 'Upgrade Now',
+  negativeButtonText: 'Not Now',
+
+  // Custom text with dynamic placeholders
+  currentVersionText: 'Current: {currentVersion}',
+  latestVersionText: 'Available: {latestVersion}',
+  updateAvailableText: 'Update from {currentVersion} to {latestVersion} now!',
+  releaseNotesTitle: 'What\'s New in {latestVersion}:',
+
+  // Custom placeholders for additional variables
+  customPlaceholders: {
+    'appName': 'MyApp',
+    'supportEmail': 'support@myapp.com',
+    'downloadSize': '45.2 MB',
+  },
+);
+```
+
+#### Localized Text (Spanish Example)
+
+```dart
+final spanishConfig = DialogConfig(
+  title: '¡Actualización Disponible!',
+  message: '¿Listo para mejorar tu experiencia?',
+  positiveButtonText: 'Actualizar',
+  negativeButtonText: 'Más Tarde',
+
+  // Spanish text with placeholders
+  currentVersionText: 'Versión actual: {currentVersion}',
+  latestVersionText: 'Nueva versión: {latestVersion}',
+  updateAvailableText: '¡Actualiza de {currentVersion} a {latestVersion}!',
+  releaseNotesTitle: 'Novedades en {latestVersion}:',
+  downloadSizeText: 'Tamaño: {downloadSize}',
+
+  customPlaceholders: {
+    'appName': 'MiApp',
+    'supportEmail': 'soporte@miapp.com',
+  },
+);
+```
+
+#### Available Text Properties
+
+- `currentVersionText` - Display current app version
+- `latestVersionText` - Display latest available version
+- `updateAvailableText` - Update available message
+- `forceUpdateText` - Force update message
+- `forceUpdateRequirementText` - Force update requirement text
+- `errorText` - Error message text
+- `errorDetailsText` - Error details header
+- `connectionErrorText` - Connection error message
+- `releaseNotesTitle` - Release notes section title
+- `downloadSizeText` - Download size display
+- `lastCheckedText` - Last checked timestamp
+- `customPlaceholders` - Map of custom placeholder values
+
+#### Supported Placeholders
+
+- `{currentVersion}` - Current app version
+- `{latestVersion}` - Latest available version
+- `{appName}` - Application name (from custom placeholders)
+- `{downloadSize}` - Download size (from custom placeholders)
+- `{error}` - Error message
+- Custom placeholders from `customPlaceholders` map
+
 ### Manual Dialog Display
 
 ```dart

@@ -145,17 +145,29 @@ The example app is organized into several demonstration screens:
    - Advanced shape customization examples
    - Contemporary UI design patterns
 
-5. **Force Update Demo** (`/force`)
+5. **Text Customization Demo**
+   - Dynamic placeholder substitution with {currentVersion}, {latestVersion}
+   - Custom text properties for all dialog elements
+   - Localization support with Spanish example
+   - Custom placeholder support for app-specific variables
+
+6. **Localized Dialogs Demo**
+   - Spanish language interface demonstration
+   - Localized text with cultural formatting
+   - Custom placeholder integration for localized content
+   - Multi-language support patterns
+
+8. **Force Update Demo** (`/force`)
    - Mandatory update scenario
    - Non-dismissible dialog behavior
    - Critical update messaging
 
-6. **Error Handling Demo** (`/error`)
+9. **Error Handling Demo** (`/error`)
    - Network error simulation
    - Retry functionality demonstration
    - Error message customization
 
-7. **API Integration Demo** (`/api`)
+10. **API Integration Demo** (`/api`)
    - Real API endpoint usage
    - Request/response handling
    - Caching behavior demonstration
@@ -295,6 +307,56 @@ final securityConfig = DialogConfig(
     foregroundColor: Colors.white,
   ),
   elevation: 8,
+);
+```
+
+#### Text Customization with Dynamic Placeholders
+
+```dart
+// English text with dynamic placeholders
+final textCustomConfig = DialogConfig(
+  title: 'Update {appName}',
+  message: 'Ready to upgrade your experience?',
+  positiveButtonText: 'Upgrade Now',
+  negativeButtonText: 'Not Now',
+
+  // Custom text with placeholders
+  currentVersionText: 'Current: {currentVersion}',
+  latestVersionText: 'Available: {latestVersion}',
+  updateAvailableText: 'Update from {currentVersion} to {latestVersion} now!',
+  releaseNotesTitle: 'What\'s New in {latestVersion}:',
+
+  // Custom placeholders
+  customPlaceholders: {
+    'appName': 'MyApp',
+    'supportEmail': 'support@myapp.com',
+    'downloadSize': '45.2 MB',
+  },
+);
+```
+
+#### Localized Text Configuration (Spanish)
+
+```dart
+// Spanish localization with custom text
+final localizedConfig = DialogConfig(
+  title: '¡Actualización Disponible!',
+  message: '¿Listo para mejorar tu experiencia?',
+  positiveButtonText: 'Actualizar',
+  negativeButtonText: 'Más Tarde',
+
+  // Spanish text with placeholders
+  currentVersionText: 'Versión actual: {currentVersion}',
+  latestVersionText: 'Nueva versión: {latestVersion}',
+  updateAvailableText: '¡Actualiza de {currentVersion} a {latestVersion}!',
+  releaseNotesTitle: 'Novedades en {latestVersion}:',
+  downloadSizeText: 'Tamaño: {downloadSize}',
+  lastCheckedText: 'Última verificación: {lastChecked}',
+
+  customPlaceholders: {
+    'appName': 'MiApp',
+    'supportEmail': 'soporte@miapp.com',
+  },
 );
 ```
 

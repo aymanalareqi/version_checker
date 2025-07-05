@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/dialog_config.dart';
 import '../models/version_check_response.dart';
+import '../utils/text_formatter.dart';
 
 /// Dialog widget for showing update available notifications
 class UpdateDialog extends StatelessWidget {
@@ -24,24 +25,13 @@ class UpdateDialog extends StatelessWidget {
     return AlertDialog(
       backgroundColor: config.backgroundColor,
       elevation: config.elevation,
-      shape: _getDialogShape(),
+      shape: config.borderRadius != null
+          ? RoundedRectangleBorder(borderRadius: config.borderRadius!)
+          : null,
       contentPadding: config.padding ?? const EdgeInsets.all(24.0),
       content: config.customContent ?? _buildDefaultContent(context),
       actions: config.customActions ?? _buildDefaultActions(context),
     );
-  }
-
-  /// Get the dialog shape, prioritizing [shape] over [borderRadius]
-  ShapeBorder? _getDialogShape() {
-    if (config.shape != null) {
-      return config.shape;
-    }
-    // ignore: deprecated_member_use_from_same_package
-    if (config.borderRadius != null) {
-      // ignore: deprecated_member_use_from_same_package
-      return RoundedRectangleBorder(borderRadius: config.borderRadius!);
-    }
-    return null;
   }
 
   Widget _buildDefaultContent(BuildContext context) {
@@ -52,9 +42,9 @@ class UpdateDialog extends StatelessWidget {
         // Update icon
         Center(
           child: Icon(
-            config.icon ?? Icons.system_update,
-            size: config.iconSize ?? 64,
-            color: config.iconColor ?? Colors.blue[600],
+            Icons.system_update,
+            size: 64,
+            color: Colors.blue[600],
           ),
         ),
         const SizedBox(height: 16),
@@ -90,21 +80,33 @@ class UpdateDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'A new version is available!',
+          TextFormatter.formatUpdateAvailableText(
+            config.updateAvailableText,
+            response,
+            customPlaceholders: config.customPlaceholders,
+          ),
           style: config.messageStyle ?? Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 8),
         Row(
           children: [
             Text(
-              'Current: ${response.currentVersion}',
+              TextFormatter.formatCurrentVersionText(
+                config.currentVersionText,
+                response,
+                customPlaceholders: config.customPlaceholders,
+              ),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Colors.grey[600],
                   ),
             ),
             const SizedBox(width: 16),
             Text(
-              'Latest: ${response.latestVersion}',
+              TextFormatter.formatLatestVersionText(
+                config.latestVersionText,
+                response,
+                customPlaceholders: config.customPlaceholders,
+              ),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Colors.green[600],
                     fontWeight: FontWeight.bold,
@@ -124,7 +126,10 @@ class UpdateDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'What\'s New:',
+          TextFormatter.formatReleaseNotesTitle(
+            config.releaseNotesTitle,
+            customPlaceholders: config.customPlaceholders,
+          ),
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -133,7 +138,7 @@ class UpdateDialog extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.grey[100],
+            color: config.backgroundColor?.withOpacity(0.1) ?? Colors.grey[100],
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(

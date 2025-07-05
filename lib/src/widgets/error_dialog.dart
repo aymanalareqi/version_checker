@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/dialog_config.dart';
+import '../utils/text_formatter.dart';
 
 /// Dialog widget for showing error messages
 class ErrorDialog extends StatelessWidget {
@@ -83,7 +84,11 @@ class ErrorDialog extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'Unable to check for updates',
+          TextFormatter.formatErrorText(
+            config.errorText,
+            error,
+            customPlaceholders: config.customPlaceholders,
+          ),
           style: config.messageStyle ??
               Theme.of(context).textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.w500,
@@ -102,7 +107,10 @@ class ErrorDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Error Details:',
+                TextFormatter.format(
+                  config.errorDetailsText ?? 'Error Details:',
+                  customPlaceholders: config.customPlaceholders,
+                ),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.red[700],
@@ -120,7 +128,11 @@ class ErrorDialog extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          'Please check your internet connection and try again.',
+          TextFormatter.format(
+            config.connectionErrorText ??
+                'Please check your internet connection and try again.',
+            customPlaceholders: config.customPlaceholders,
+          ),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Colors.grey[600],
               ),

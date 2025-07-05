@@ -220,6 +220,162 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   );
 
+  // Text customization checker with dynamic placeholders
+  late final _textCustomChecker = VersionChecker(
+    config: VersionCheckerConfig(
+      apiUrl: 'https://salawati.smart-fingers.com/api/version/check',
+      timeoutSeconds: 15,
+      updateDialogConfig: DialogConfig(
+        title: 'MyApp Update Available! 🚀',
+        message: 'Ready to upgrade your experience?',
+        positiveButtonText: 'Upgrade Now',
+        negativeButtonText: 'Not Now',
+        icon: Icons.system_update,
+        iconColor: Colors.blue,
+        iconSize: 64,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        backgroundColor: Colors.blue.shade50,
+        // Text customization properties
+        currentVersionText: 'Your version: {currentVersion}',
+        latestVersionText: 'New version: {latestVersion}',
+        updateAvailableText:
+            'Update from {currentVersion} to {latestVersion} now!',
+        releaseNotesTitle: 'What\'s New in {latestVersion}:',
+        downloadSizeText: 'Download size: {downloadSize}',
+        customPlaceholders: {
+          'appName': 'MyApp',
+          'supportEmail': 'support@myapp.com',
+        },
+      ),
+      forceUpdateDialogConfig: DialogConfig(
+        title: 'Critical MyApp Update Required',
+        message: 'This version is no longer supported.',
+        positiveButtonText: 'Update Now',
+        showNegativeButton: false,
+        icon: Icons.warning,
+        iconColor: Colors.red,
+        iconSize: 72,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        backgroundColor: Colors.red.shade50,
+        // Text customization properties
+        forceUpdateText: 'Version {currentVersion} is no longer supported.',
+        forceUpdateRequirementText:
+            'Please update to {latestVersion} to continue using {appName}.',
+        currentVersionText: 'Current: {currentVersion}',
+        latestVersionText: 'Required: {latestVersion}',
+        releaseNotesTitle: 'Critical Updates in {latestVersion}:',
+        customPlaceholders: {
+          'appName': 'MyApp',
+          'supportTeam': 'MyApp Support Team',
+        },
+        barrierDismissible: false,
+      ),
+      errorDialogConfig: DialogConfig(
+        title: 'Update Check Failed',
+        message: 'Unable to check for updates right now.',
+        positiveButtonText: 'Try Again',
+        negativeButtonText: 'Cancel',
+        icon: Icons.error_outline,
+        iconColor: Colors.orange,
+        iconSize: 60,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        backgroundColor: Colors.orange.shade50,
+        // Text customization properties
+        errorText: 'Failed to check for {appName} updates: {error}',
+        errorDetailsText: 'Technical Details:',
+        connectionErrorText:
+            'Please check your internet connection and try again. Contact {supportEmail} if the problem persists.',
+        customPlaceholders: {
+          'appName': 'MyApp',
+          'supportEmail': 'support@myapp.com',
+        },
+      ),
+    ),
+  );
+
+  // Localized text checker (Spanish example)
+  late final _localizedChecker = VersionChecker(
+    config: VersionCheckerConfig(
+      apiUrl: 'https://salawati.smart-fingers.com/api/version/check',
+      timeoutSeconds: 15,
+      locale: 'es',
+      updateDialogConfig: DialogConfig(
+        title: '¡Actualización Disponible!',
+        message: '¿Listo para mejorar tu experiencia?',
+        positiveButtonText: 'Actualizar',
+        negativeButtonText: 'Más Tarde',
+        icon: Icons.update,
+        iconColor: Colors.green,
+        iconSize: 68,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+        ),
+        backgroundColor: Colors.green.shade50,
+        // Spanish text customization
+        currentVersionText: 'Versión actual: {currentVersion}',
+        latestVersionText: 'Nueva versión: {latestVersion}',
+        updateAvailableText:
+            '¡Actualiza de {currentVersion} a {latestVersion}!',
+        releaseNotesTitle: 'Novedades en {latestVersion}:',
+        downloadSizeText: 'Tamaño de descarga: {downloadSize}',
+        customPlaceholders: {
+          'appName': 'MiApp',
+        },
+      ),
+      forceUpdateDialogConfig: DialogConfig(
+        title: 'Actualización Obligatoria',
+        message: 'Esta versión ya no es compatible.',
+        positiveButtonText: 'Actualizar Ahora',
+        showNegativeButton: false,
+        icon: Icons.priority_high,
+        iconColor: Colors.red,
+        iconSize: 76,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+        backgroundColor: Colors.red.shade50,
+        // Spanish text customization
+        forceUpdateText: 'La versión {currentVersion} ya no es compatible.',
+        forceUpdateRequirementText:
+            'Por favor actualiza a {latestVersion} para continuar usando {appName}.',
+        currentVersionText: 'Actual: {currentVersion}',
+        latestVersionText: 'Requerida: {latestVersion}',
+        releaseNotesTitle: 'Actualizaciones Críticas en {latestVersion}:',
+        customPlaceholders: {
+          'appName': 'MiApp',
+        },
+        barrierDismissible: false,
+      ),
+      errorDialogConfig: DialogConfig(
+        title: 'Error de Conexión',
+        message: 'No se pudo verificar actualizaciones.',
+        positiveButtonText: 'Reintentar',
+        negativeButtonText: 'Cancelar',
+        icon: Icons.wifi_off,
+        iconColor: Colors.orange,
+        iconSize: 64,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        backgroundColor: Colors.orange.shade50,
+        // Spanish text customization
+        errorText: 'Error al verificar actualizaciones de {appName}: {error}',
+        errorDetailsText: 'Detalles Técnicos:',
+        connectionErrorText:
+            'Verifica tu conexión a internet e intenta nuevamente.',
+        customPlaceholders: {
+          'appName': 'MiApp',
+        },
+      ),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -409,6 +565,112 @@ class _MyHomePageState extends State<MyHomePage> {
                         foregroundColor: Colors.white,
                       ),
                       child: const Text('Check with Modern Dialogs'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Text Customization Dialogs
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Text Customization Dialogs',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                        'Check with custom text formatting and dynamic placeholders'),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _isLoading
+                                ? null
+                                : () => _checkVersion(
+                                    _textCustomChecker, 'Text Custom'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text('Check with Text Placeholders'),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _isLoading
+                                ? null
+                                : () => _simulateForceUpdate(
+                                    _textCustomChecker, 'Text Custom Force'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text('Test Force Update Text'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Localized Dialogs
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Localized Dialogs (Spanish)',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                        'Check with Spanish text customization and localization'),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _isLoading
+                                ? null
+                                : () => _checkVersion(
+                                    _localizedChecker, 'Localized (ES)'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text('Verificar Actualización'),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _isLoading
+                                ? null
+                                : () => _simulateError(
+                                    _localizedChecker, 'Localized Error'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.orange,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text('Probar Error'),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -613,6 +875,47 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       setState(() {
         _status = 'Error simulated: $e';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _simulateForceUpdate(VersionChecker checker, String type) async {
+    setState(() {
+      _isLoading = true;
+      _status = 'Simulating force update ($type)...';
+    });
+
+    try {
+      // Create a mock response that simulates a force update scenario
+      final mockResponse = VersionCheckResponse(
+        success: true,
+        currentVersion: '1.0.0',
+        platform: 'ios',
+        updateAvailable: true,
+        latestVersion: '2.0.0',
+        forceUpdate: true,
+        downloadUrl: 'https://apps.apple.com/app/example',
+        releaseNotes:
+            'Critical security update with new features:\n\n• Enhanced security protocols\n• Performance improvements\n• Bug fixes\n• New user interface',
+      );
+
+      // Show the force update dialog directly
+      await VersionChecker.showForceUpdateDialog(
+        context,
+        response: mockResponse,
+        config: checker.config.forceUpdateDialogConfig,
+      );
+
+      setState(() {
+        _status = 'Force update dialog shown ($type)';
+      });
+    } catch (e) {
+      setState(() {
+        _status = 'Error showing force update: $e';
       });
     } finally {
       setState(() {

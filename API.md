@@ -243,6 +243,91 @@ The `shape` property provides flexible dialog container customization:
   )
   ```
 
+#### Text Customization
+
+The `DialogConfig` class provides comprehensive text customization capabilities with dynamic placeholder substitution:
+
+**Available Text Properties:**
+- `currentVersionText` - Text for displaying current version
+- `latestVersionText` - Text for displaying latest version
+- `updateAvailableText` - Text for update available message
+- `forceUpdateText` - Text for force update message
+- `forceUpdateRequirementText` - Text for force update requirement
+- `errorText` - Text for error messages
+- `errorDetailsText` - Text for error details header
+- `connectionErrorText` - Text for connection error messages
+- `releaseNotesTitle` - Title for release notes section
+- `downloadSizeText` - Text for download size display
+- `lastCheckedText` - Text for last checked timestamp
+- `customPlaceholders` - Map of custom placeholder values
+
+**Dynamic Placeholders:**
+- `{currentVersion}` - Current app version
+- `{latestVersion}` - Latest available version
+- `{appName}` - Application name (from custom placeholders)
+- `{downloadSize}` - Download size (from custom placeholders)
+- `{error}` - Error message
+- Custom placeholders from `customPlaceholders` map
+
+**Basic Text Customization:**
+```dart
+DialogConfig(
+  currentVersionText: 'Your version: {currentVersion}',
+  latestVersionText: 'New version: {latestVersion}',
+  updateAvailableText: 'Update from {currentVersion} to {latestVersion} now!',
+  releaseNotesTitle: 'What\'s New in {latestVersion}:',
+  customPlaceholders: {
+    'appName': 'MyApp',
+    'supportEmail': 'support@myapp.com',
+  },
+)
+```
+
+**Localized Text Example (Spanish):**
+```dart
+DialogConfig(
+  title: '¡Actualización Disponible!',
+  message: '¿Listo para mejorar tu experiencia?',
+  positiveButtonText: 'Actualizar',
+  negativeButtonText: 'Más Tarde',
+  currentVersionText: 'Versión actual: {currentVersion}',
+  latestVersionText: 'Nueva versión: {latestVersion}',
+  updateAvailableText: '¡Actualiza de {currentVersion} a {latestVersion}!',
+  releaseNotesTitle: 'Novedades en {latestVersion}:',
+  customPlaceholders: {
+    'appName': 'MiApp',
+  },
+)
+```
+
+**Force Update Text Customization:**
+```dart
+DialogConfig(
+  forceUpdateText: 'Version {currentVersion} is no longer supported.',
+  forceUpdateRequirementText: 'Please update to {latestVersion} to continue using {appName}.',
+  currentVersionText: 'Current: {currentVersion}',
+  latestVersionText: 'Required: {latestVersion}',
+  releaseNotesTitle: 'Critical Updates in {latestVersion}:',
+  customPlaceholders: {
+    'appName': 'MyApp',
+    'supportTeam': 'MyApp Support Team',
+  },
+)
+```
+
+**Error Dialog Text Customization:**
+```dart
+DialogConfig(
+  errorText: 'Failed to check for {appName} updates: {error}',
+  errorDetailsText: 'Technical Details:',
+  connectionErrorText: 'Please check your internet connection and try again. Contact {supportEmail} if the problem persists.',
+  customPlaceholders: {
+    'appName': 'MyApp',
+    'supportEmail': 'support@myapp.com',
+  },
+)
+```
+
 #### Pre-configured Instances
 
 - `DialogConfig.updateAvailable` - Standard update dialog
@@ -402,6 +487,98 @@ static bool isValidVersion(String version)
 ```
 
 Validates if a string is a valid semantic version.
+
+### TextFormatter
+
+Utility class for formatting text with dynamic placeholder substitution.
+
+#### Static Methods
+
+##### format()
+
+```dart
+static String format(
+  String text, {
+  VersionCheckResponse? response,
+  String? appName,
+  Map<String, String>? customPlaceholders,
+})
+```
+
+Formats text by replacing placeholders with actual values.
+
+**Parameters:**
+- `text` - The text template with placeholders
+- `response` - Version check response for version placeholders
+- `appName` - Application name for {appName} placeholder
+- `customPlaceholders` - Map of custom placeholder key-value pairs
+
+**Supported Placeholders:**
+- `{currentVersion}` - Current app version from response
+- `{latestVersion}` - Latest available version from response
+- `{appName}` - Application name from parameter
+- `{error}` - Error message from response
+- Custom placeholders from the customPlaceholders map
+
+**Example:**
+```dart
+final formatted = TextFormatter.format(
+  'Update {appName} from {currentVersion} to {latestVersion}',
+  response: versionResponse,
+  appName: 'MyApp',
+  customPlaceholders: {
+    'supportEmail': 'support@myapp.com',
+  },
+);
+```
+
+##### formatUpdateAvailableText()
+
+```dart
+static String formatUpdateAvailableText(
+  String? text,
+  VersionCheckResponse response, {
+  Map<String, String>? customPlaceholders,
+})
+```
+
+Formats update available text with default fallback.
+
+##### formatCurrentVersionText()
+
+```dart
+static String formatCurrentVersionText(
+  String? text,
+  VersionCheckResponse response, {
+  Map<String, String>? customPlaceholders,
+})
+```
+
+Formats current version text with default fallback.
+
+##### formatLatestVersionText()
+
+```dart
+static String formatLatestVersionText(
+  String? text,
+  VersionCheckResponse response, {
+  Map<String, String>? customPlaceholders,
+})
+```
+
+Formats latest version text with default fallback.
+
+##### formatErrorText()
+
+```dart
+static String formatErrorText(
+  String? text,
+  String error, {
+  Map<String, String>? customPlaceholders,
+})
+```
+
+Formats error text with default fallback.
 
 ## Callbacks
 
@@ -596,6 +773,94 @@ final fullyCustomConfig = DialogConfig(
   ),
   elevation: 12,
   padding: EdgeInsets.all(24),
+);
+```
+
+#### Text Customization Examples
+
+**Dynamic Text with Placeholders:**
+```dart
+final textCustomConfig = DialogConfig(
+  title: 'Update {appName}',
+  message: 'Ready to upgrade your experience?',
+  positiveButtonText: 'Upgrade Now',
+  negativeButtonText: 'Not Now',
+
+  // Custom text with placeholders
+  currentVersionText: 'Current: {currentVersion}',
+  latestVersionText: 'Available: {latestVersion}',
+  updateAvailableText: 'Update from {currentVersion} to {latestVersion} now!',
+  releaseNotesTitle: 'What\'s New in {latestVersion}:',
+
+  // Custom placeholders
+  customPlaceholders: {
+    'appName': 'MyApp',
+    'supportEmail': 'support@myapp.com',
+    'downloadSize': '45.2 MB',
+  },
+);
+```
+
+**Localized Text (Spanish):**
+```dart
+final spanishConfig = DialogConfig(
+  title: '¡Actualización Disponible!',
+  message: '¿Listo para mejorar tu experiencia?',
+  positiveButtonText: 'Actualizar',
+  negativeButtonText: 'Más Tarde',
+
+  // Spanish text with placeholders
+  currentVersionText: 'Versión actual: {currentVersion}',
+  latestVersionText: 'Nueva versión: {latestVersion}',
+  updateAvailableText: '¡Actualiza de {currentVersion} a {latestVersion}!',
+  releaseNotesTitle: 'Novedades en {latestVersion}:',
+  downloadSizeText: 'Tamaño: {downloadSize}',
+  lastCheckedText: 'Última verificación: {lastChecked}',
+
+  customPlaceholders: {
+    'appName': 'MiApp',
+    'supportEmail': 'soporte@miapp.com',
+  },
+);
+```
+
+**Force Update Text Customization:**
+```dart
+final forceUpdateConfig = DialogConfig(
+  title: 'Critical Update Required',
+  message: 'This update contains important security fixes.',
+  positiveButtonText: 'Update Now',
+
+  // Force update specific text
+  forceUpdateText: 'Version {currentVersion} is no longer supported.',
+  forceUpdateRequirementText: 'Please update to {latestVersion} to continue using {appName}.',
+  currentVersionText: 'Current: {currentVersion}',
+  latestVersionText: 'Required: {latestVersion}',
+  releaseNotesTitle: 'Critical Updates in {latestVersion}:',
+
+  customPlaceholders: {
+    'appName': 'MyApp',
+    'supportTeam': 'MyApp Support Team',
+  },
+);
+```
+
+**Error Dialog Text Customization:**
+```dart
+final errorConfig = DialogConfig(
+  title: 'Update Check Failed',
+  positiveButtonText: 'Retry',
+  negativeButtonText: 'Cancel',
+
+  // Error specific text
+  errorText: 'Failed to check for {appName} updates: {error}',
+  errorDetailsText: 'Technical Details:',
+  connectionErrorText: 'Please check your internet connection and try again. Contact {supportEmail} if the problem persists.',
+
+  customPlaceholders: {
+    'appName': 'MyApp',
+    'supportEmail': 'support@myapp.com',
+  },
 );
 ```
 

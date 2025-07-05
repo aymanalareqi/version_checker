@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/dialog_config.dart';
 import '../models/version_check_response.dart';
+import '../utils/text_formatter.dart';
 
 /// Dialog widget for showing forced update notifications
 class ForceUpdateDialog extends StatelessWidget {
@@ -94,7 +95,11 @@ class ForceUpdateDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          'This version is no longer supported.',
+          TextFormatter.formatForceUpdateText(
+            config.forceUpdateText,
+            response,
+            customPlaceholders: config.customPlaceholders,
+          ),
           style: config.messageStyle ??
               Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w500,
@@ -103,7 +108,12 @@ class ForceUpdateDialog extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Please update to version ${response.latestVersion} to continue using the app.',
+          TextFormatter.format(
+            config.forceUpdateRequirementText ??
+                'Please update to version {latestVersion} to continue using the app.',
+            response: response,
+            customPlaceholders: config.customPlaceholders,
+          ),
           style: Theme.of(context).textTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),
@@ -119,7 +129,11 @@ class ForceUpdateDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Current: ${response.currentVersion}',
+                TextFormatter.formatCurrentVersionText(
+                  config.currentVersionText,
+                  response,
+                  customPlaceholders: config.customPlaceholders,
+                ),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Colors.red[700],
                     ),
@@ -128,7 +142,11 @@ class ForceUpdateDialog extends StatelessWidget {
               Icon(Icons.arrow_forward, size: 16, color: Colors.red[700]),
               const SizedBox(width: 16),
               Text(
-                'Required: ${response.latestVersion}',
+                TextFormatter.format(
+                  config.latestVersionText ?? 'Required: {latestVersion}',
+                  response: response,
+                  customPlaceholders: config.customPlaceholders,
+                ),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Colors.red[700],
                       fontWeight: FontWeight.bold,
@@ -149,7 +167,10 @@ class ForceUpdateDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Update Details:',
+          TextFormatter.format(
+            config.releaseNotesTitle ?? 'Update Details:',
+            customPlaceholders: config.customPlaceholders,
+          ),
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),

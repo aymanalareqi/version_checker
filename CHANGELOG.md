@@ -21,6 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Backward compatibility with deprecated `borderRadius` property
   - Priority system: `shape` > `borderRadius` > default
   - Comprehensive example configurations in example app
+- 📝 **Text Customization** - Comprehensive text customization with dynamic placeholders
+  - 12 new text customization properties in DialogConfig
+  - Dynamic placeholder substitution system with TextFormatter utility
+  - Support for `{currentVersion}`, `{latestVersion}`, `{appName}`, `{error}` placeholders
+  - Custom placeholder support via `customPlaceholders` map
+  - Localization support with custom text formatting
+  - Specialized formatting methods for different dialog types
 
 ### Enhanced
 - 📱 **Example App** - Added comprehensive demonstrations
