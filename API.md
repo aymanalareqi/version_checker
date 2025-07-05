@@ -157,6 +157,7 @@ const DialogConfig({
   TextStyle? messageStyle,
   ButtonStyle? positiveButtonStyle,
   ButtonStyle? negativeButtonStyle,
+  @Deprecated('Use shape property instead')
   BorderRadius? borderRadius,
   double? elevation,
   bool barrierDismissible = true,
@@ -166,8 +167,81 @@ const DialogConfig({
   IconData? icon,
   Color? iconColor,
   double? iconSize,
+  ShapeBorder? shape,
 })
 ```
+
+#### Properties
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `title` | `String?` | `null` | Dialog title text |
+| `message` | `String?` | `null` | Dialog message text |
+| `positiveButtonText` | `String?` | `null` | Text for positive action button |
+| `negativeButtonText` | `String?` | `null` | Text for negative action button |
+| `showNegativeButton` | `bool` | `true` | Whether to show the negative button |
+| `backgroundColor` | `Color?` | `null` | Dialog background color |
+| `titleStyle` | `TextStyle?` | `null` | Custom style for title text |
+| `messageStyle` | `TextStyle?` | `null` | Custom style for message text |
+| `positiveButtonStyle` | `ButtonStyle?` | `null` | Custom style for positive button |
+| `negativeButtonStyle` | `ButtonStyle?` | `null` | Custom style for negative button |
+| `borderRadius` | `BorderRadius?` | `null` | **Deprecated:** Use `shape` instead |
+| `elevation` | `double?` | `null` | Dialog elevation/shadow |
+| `barrierDismissible` | `bool` | `true` | Whether dialog can be dismissed by tapping outside |
+| `padding` | `EdgeInsets?` | `null` | Custom padding for dialog content |
+| `customContent` | `Widget?` | `null` | Custom content widget (overrides title/message) |
+| `customActions` | `List<Widget>?` | `null` | Custom action buttons (overrides default buttons) |
+| `icon` | `IconData?` | `null` | Custom icon for the dialog |
+| `iconColor` | `Color?` | `null` | Color for the dialog icon |
+| `iconSize` | `double?` | `64.0` | Size of the dialog icon in logical pixels |
+| `shape` | `ShapeBorder?` | `null` | Custom shape for the dialog container |
+
+#### Icon Customization
+
+The `icon`, `iconColor`, and `iconSize` properties allow you to customize the dialog icons:
+
+- **Default Icons:**
+  - Update dialogs: `Icons.system_update` with `Colors.blue[600]`
+  - Force update dialogs: `Icons.warning_amber_rounded` with `Colors.orange[600]`
+  - Error dialogs: `Icons.error_outline` with `Colors.red[600]`
+
+- **Custom Icon Example:**
+  ```dart
+  DialogConfig(
+    icon: Icons.cloud_download,
+    iconColor: Colors.green,
+    iconSize: 72,
+  )
+  ```
+
+#### Shape Customization
+
+The `shape` property provides flexible dialog container customization:
+
+- **Rounded Rectangle with Border:**
+  ```dart
+  DialogConfig(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+      side: BorderSide(color: Colors.blue, width: 2),
+    ),
+  )
+  ```
+
+- **Circular Dialog:**
+  ```dart
+  DialogConfig(
+    shape: CircleBorder(),
+    padding: EdgeInsets.all(32),
+  )
+  ```
+
+- **Stadium Shape:**
+  ```dart
+  DialogConfig(
+    shape: StadiumBorder(),
+  )
+  ```
 
 #### Pre-configured Instances
 
@@ -399,6 +473,8 @@ final response = await versionChecker.checkForUpdates(
 
 ### Custom Dialog Styling
 
+#### Basic Styling
+
 ```dart
 final customConfig = DialogConfig(
   title: 'Update Available',
@@ -416,6 +492,110 @@ final customConfig = DialogConfig(
   backgroundColor: Colors.white,
   borderRadius: BorderRadius.circular(12),
   elevation: 8,
+);
+```
+
+#### Icon Customization
+
+```dart
+// Custom download icon with green color
+final downloadConfig = DialogConfig(
+  icon: Icons.cloud_download,
+  iconColor: Colors.green,
+  iconSize: 72,
+  title: 'Download Update',
+  message: 'A new version is ready to download.',
+);
+
+// Security update with warning icon
+final securityConfig = DialogConfig(
+  icon: Icons.security,
+  iconColor: Colors.red,
+  iconSize: 64,
+  title: 'Security Update Required',
+  message: 'This update contains important security fixes.',
+);
+
+// Modern rocket launch icon
+final modernConfig = DialogConfig(
+  icon: Icons.rocket_launch,
+  iconColor: Colors.purple,
+  iconSize: 80,
+  title: 'New Features Available',
+);
+```
+
+#### Shape Customization
+
+```dart
+// Rounded rectangle with colored border
+final borderedConfig = DialogConfig(
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20),
+    side: BorderSide(color: Colors.blue, width: 2),
+  ),
+  icon: Icons.system_update,
+  iconColor: Colors.blue,
+);
+
+// Circular dialog
+final circularConfig = DialogConfig(
+  shape: CircleBorder(),
+  padding: EdgeInsets.all(32),
+  icon: Icons.priority_high,
+  iconColor: Colors.orange,
+);
+
+// Stadium-shaped dialog
+final stadiumConfig = DialogConfig(
+  shape: StadiumBorder(),
+  icon: Icons.rocket_launch,
+  iconColor: Colors.purple,
+  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+);
+```
+
+#### Complete Custom Configuration
+
+```dart
+final fullyCustomConfig = DialogConfig(
+  // Icon customization
+  icon: Icons.cloud_download,
+  iconColor: Colors.green,
+  iconSize: 72,
+
+  // Shape customization
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(16),
+    side: BorderSide(color: Colors.green, width: 2),
+  ),
+
+  // Content customization
+  title: 'Enhanced Update Available',
+  message: 'Experience new features with improved performance.',
+  positiveButtonText: 'Download Now',
+  negativeButtonText: 'Remind Later',
+
+  // Styling
+  backgroundColor: Colors.green.shade50,
+  titleStyle: TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    color: Colors.green.shade800,
+  ),
+  messageStyle: TextStyle(
+    fontSize: 16,
+    color: Colors.green.shade700,
+  ),
+  positiveButtonStyle: ElevatedButton.styleFrom(
+    backgroundColor: Colors.green,
+    foregroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+    ),
+  ),
+  elevation: 12,
+  padding: EdgeInsets.all(24),
 );
 ```
 

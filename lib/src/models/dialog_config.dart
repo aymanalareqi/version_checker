@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 /// This class allows you to customize:
 /// - Text content (title, message, button labels)
 /// - Visual styling (colors, fonts, borders, elevation)
+/// - Icon appearance (custom icons, colors, sizes)
+/// - Dialog shape (border radius, custom shapes)
 /// - Behavior (dismissibility, button visibility)
 /// - Layout (padding, custom content, custom actions)
 ///
@@ -19,6 +21,9 @@ import 'package:flutter/material.dart';
 ///   message: 'A new version is available with exciting features!',
 ///   positiveButtonText: 'Update Now',
 ///   negativeButtonText: 'Maybe Later',
+///   icon: Icons.cloud_download,
+///   iconColor: Colors.blue,
+///   iconSize: 72,
 ///   titleStyle: TextStyle(
 ///     fontSize: 20,
 ///     fontWeight: FontWeight.bold,
@@ -33,7 +38,9 @@ import 'package:flutter/material.dart';
 ///     foregroundColor: Colors.white,
 ///   ),
 ///   backgroundColor: Colors.white,
-///   borderRadius: BorderRadius.circular(12),
+///   shape: RoundedRectangleBorder(
+///     borderRadius: BorderRadius.circular(16),
+///   ),
 ///   elevation: 8,
 ///   barrierDismissible: true,
 ///   showNegativeButton: true,
@@ -41,7 +48,7 @@ import 'package:flutter/material.dart';
 /// ```
 ///
 /// Pre-configured instances are available for common use cases:
-/// - [DialogConfig.update] - Standard update dialog
+/// - [DialogConfig.updateAvailable] - Standard update dialog
 /// - [DialogConfig.forceUpdate] - Mandatory update dialog
 /// - [DialogConfig.error] - Error dialog with retry functionality
 ///
@@ -78,6 +85,11 @@ class DialogConfig {
   final ButtonStyle? negativeButtonStyle;
 
   /// Dialog border radius
+  ///
+  /// Note: This property is deprecated in favor of [shape].
+  /// Use [shape] with [RoundedRectangleBorder] for border radius customization.
+  @Deprecated(
+      'Use shape property instead for more flexible dialog shape customization')
   final BorderRadius? borderRadius;
 
   /// Dialog elevation
@@ -94,6 +106,55 @@ class DialogConfig {
 
   /// Custom actions (overrides default buttons)
   final List<Widget>? customActions;
+
+  /// Custom icon for the dialog
+  ///
+  /// If not provided, default icons will be used:
+  /// - Update dialogs: [Icons.system_update]
+  /// - Force update dialogs: [Icons.warning_amber_rounded]
+  /// - Error dialogs: [Icons.error_outline]
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   icon: Icons.cloud_download,
+  ///   iconColor: Colors.blue,
+  ///   iconSize: 72,
+  /// )
+  /// ```
+  final IconData? icon;
+
+  /// Color for the dialog icon
+  ///
+  /// If not provided, default colors will be used:
+  /// - Update dialogs: [Colors.blue[600]]
+  /// - Force update dialogs: [Colors.orange[600]]
+  /// - Error dialogs: [Colors.red[600]]
+  final Color? iconColor;
+
+  /// Size of the dialog icon in logical pixels
+  ///
+  /// Defaults to 64.0 if not specified.
+  final double? iconSize;
+
+  /// Custom shape for the dialog container
+  ///
+  /// This property provides more flexibility than [borderRadius] and allows
+  /// for custom dialog shapes including rounded rectangles, circles, or
+  /// completely custom shapes.
+  ///
+  /// Example:
+  /// ```dart
+  /// DialogConfig(
+  ///   shape: RoundedRectangleBorder(
+  ///     borderRadius: BorderRadius.circular(16),
+  ///     side: BorderSide(color: Colors.blue, width: 2),
+  ///   ),
+  /// )
+  /// ```
+  ///
+  /// If both [shape] and [borderRadius] are provided, [shape] takes precedence.
+  final ShapeBorder? shape;
 
   const DialogConfig({
     this.title,
@@ -112,6 +173,10 @@ class DialogConfig {
     this.padding,
     this.customContent,
     this.customActions,
+    this.icon,
+    this.iconColor,
+    this.iconSize,
+    this.shape,
   });
 
   /// Create a copy with modified fields
@@ -126,12 +191,18 @@ class DialogConfig {
     TextStyle? messageStyle,
     ButtonStyle? positiveButtonStyle,
     ButtonStyle? negativeButtonStyle,
+    @Deprecated(
+        'Use shape property instead for more flexible dialog shape customization')
     BorderRadius? borderRadius,
     double? elevation,
     bool? barrierDismissible,
     EdgeInsets? padding,
     Widget? customContent,
     List<Widget>? customActions,
+    IconData? icon,
+    Color? iconColor,
+    double? iconSize,
+    ShapeBorder? shape,
   }) {
     return DialogConfig(
       title: title ?? this.title,
@@ -144,12 +215,17 @@ class DialogConfig {
       messageStyle: messageStyle ?? this.messageStyle,
       positiveButtonStyle: positiveButtonStyle ?? this.positiveButtonStyle,
       negativeButtonStyle: negativeButtonStyle ?? this.negativeButtonStyle,
+      // ignore: deprecated_member_use_from_same_package
       borderRadius: borderRadius ?? this.borderRadius,
       elevation: elevation ?? this.elevation,
       barrierDismissible: barrierDismissible ?? this.barrierDismissible,
       padding: padding ?? this.padding,
       customContent: customContent ?? this.customContent,
       customActions: customActions ?? this.customActions,
+      icon: icon ?? this.icon,
+      iconColor: iconColor ?? this.iconColor,
+      iconSize: iconSize ?? this.iconSize,
+      shape: shape ?? this.shape,
     );
   }
 

@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- 🎭 **Icon Customization** - Added support for custom dialog icons
+  - `icon` property for custom IconData
+  - `iconColor` property for icon color customization
+  - `iconSize` property for icon size control
+  - Default icons for different dialog types (update, force update, error)
+- 🔷 **Shape Customization** - Added flexible dialog shape support
+  - `shape` property for custom ShapeBorder configurations
+  - Support for RoundedRectangleBorder, CircleBorder, StadiumBorder
+  - Custom borders and advanced shape styling
+- 🎨 **Enhanced Dialog Customization** - Expanded styling capabilities
+  - Backward compatibility with deprecated `borderRadius` property
+  - Priority system: `shape` > `borderRadius` > default
+  - Comprehensive example configurations in example app
+
+### Enhanced
+- 📱 **Example App** - Added comprehensive demonstrations
+  - Enhanced Icons & Shapes demo with custom configurations
+  - Modern Circular Design demo with advanced shapes
+  - Error simulation functionality for testing custom error dialogs
+- 🧪 **Testing** - All 77 tests passing with new features
+- 📚 **Documentation** - Updated with new customization examples
+
 ### Documentation
 - 📚 **Enhanced installation documentation** with GitHub dependency instructions
 - 🔧 **Added comprehensive GitHub installation guide** with multiple installation options
@@ -15,6 +38,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 🎯 **Added advanced GitHub installation options** (specific commits, branches, SSH)
 - ⚠️ **Added GitHub vs pub.dev comparison** with pros and cons
 - 🔍 **Enhanced API documentation** with installation instructions
+- 🎨 **Added comprehensive icon and shape customization examples**
+- 📋 **Updated API.md with detailed property documentation**
+- 🎭 **Added usage examples for all new customization features**
+
+### Deprecated
+- ⚠️ **BorderRadius property** - Use `shape` property instead for more flexible dialog shape customization
 
 ## [1.0.0] - 2025-01-05
 

@@ -22,14 +22,25 @@ class ForceUpdateDialog extends StatelessWidget {
       child: AlertDialog(
         backgroundColor: config.backgroundColor,
         elevation: config.elevation,
-        shape: config.borderRadius != null
-            ? RoundedRectangleBorder(borderRadius: config.borderRadius!)
-            : null,
+        shape: _getDialogShape(),
         contentPadding: config.padding ?? const EdgeInsets.all(24.0),
         content: config.customContent ?? _buildDefaultContent(context),
         actions: config.customActions ?? _buildDefaultActions(context),
       ),
     );
+  }
+
+  /// Get the dialog shape, prioritizing [shape] over [borderRadius]
+  ShapeBorder? _getDialogShape() {
+    if (config.shape != null) {
+      return config.shape;
+    }
+    // ignore: deprecated_member_use_from_same_package
+    if (config.borderRadius != null) {
+      // ignore: deprecated_member_use_from_same_package
+      return RoundedRectangleBorder(borderRadius: config.borderRadius!);
+    }
+    return null;
   }
 
   Widget _buildDefaultContent(BuildContext context) {
@@ -40,9 +51,9 @@ class ForceUpdateDialog extends StatelessWidget {
         // Warning icon
         Center(
           child: Icon(
-            Icons.warning_amber_rounded,
-            size: 64,
-            color: Colors.orange[600],
+            config.icon ?? Icons.warning_amber_rounded,
+            size: config.iconSize ?? 64,
+            color: config.iconColor ?? Colors.orange[600],
           ),
         ),
         const SizedBox(height: 16),

@@ -21,13 +21,24 @@ class ErrorDialog extends StatelessWidget {
     return AlertDialog(
       backgroundColor: config.backgroundColor,
       elevation: config.elevation,
-      shape: config.borderRadius != null
-          ? RoundedRectangleBorder(borderRadius: config.borderRadius!)
-          : null,
+      shape: _getDialogShape(),
       contentPadding: config.padding ?? const EdgeInsets.all(24.0),
       content: config.customContent ?? _buildDefaultContent(context),
       actions: config.customActions ?? _buildDefaultActions(context),
     );
+  }
+
+  /// Get the dialog shape, prioritizing [shape] over [borderRadius]
+  ShapeBorder? _getDialogShape() {
+    if (config.shape != null) {
+      return config.shape;
+    }
+    // ignore: deprecated_member_use_from_same_package
+    if (config.borderRadius != null) {
+      // ignore: deprecated_member_use_from_same_package
+      return RoundedRectangleBorder(borderRadius: config.borderRadius!);
+    }
+    return null;
   }
 
   Widget _buildDefaultContent(BuildContext context) {
@@ -37,9 +48,9 @@ class ErrorDialog extends StatelessWidget {
       children: [
         // Error icon
         Icon(
-          Icons.error_outline,
-          size: 64,
-          color: Colors.red[600],
+          config.icon ?? Icons.error_outline,
+          size: config.iconSize ?? 64,
+          color: config.iconColor ?? Colors.red[600],
         ),
         const SizedBox(height: 16),
         if (config.title != null) ...[

@@ -7,14 +7,16 @@ A comprehensive Flutter plugin for checking app version updates with customizabl
 
 ## Features
 
-✨ **Easy Integration** - Simple setup with minimal configuration  
-🎨 **Customizable Dialogs** - Beautiful, fully customizable update dialogs  
-🔄 **Automatic Version Checking** - Smart version comparison and update detection  
-🌐 **API Integration** - Works with any REST API endpoint  
-📱 **Cross Platform** - Supports iOS and Android  
-⚡ **Caching Support** - Built-in response caching for better performance  
-🎯 **Force Updates** - Support for mandatory app updates  
-🛠️ **Error Handling** - Comprehensive error handling with retry functionality  
+✨ **Easy Integration** - Simple setup with minimal configuration
+🎨 **Customizable Dialogs** - Beautiful, fully customizable update dialogs with icon and shape support
+🎭 **Icon Customization** - Custom icons, colors, and sizes for different update scenarios
+🔷 **Shape Customization** - Flexible dialog shapes including circles, rounded rectangles, and custom borders
+🔄 **Automatic Version Checking** - Smart version comparison and update detection
+🌐 **API Integration** - Works with any REST API endpoint
+📱 **Cross Platform** - Supports iOS and Android
+⚡ **Caching Support** - Built-in response caching for better performance
+🎯 **Force Updates** - Support for mandatory app updates
+🛠️ **Error Handling** - Comprehensive error handling with retry functionality
 
 ## Installation
 
@@ -213,7 +215,7 @@ The plugin sends a POST request with:
 
 ## Dialog Customization
 
-### Custom Dialog Styling
+### Basic Dialog Styling
 
 ```dart
 final customConfig = DialogConfig(
@@ -237,16 +239,104 @@ final customConfig = DialogConfig(
   negativeButtonStyle: TextButton.styleFrom(
     foregroundColor: Colors.grey,
   ),
-  icon: Icons.system_update,
   barrierDismissible: true,
   showNegativeButton: true,
 );
+```
 
-// Use custom dialog config
-await versionChecker.checkForUpdates(
-  context: context,
-  showDialogs: true,
-  customDialogConfig: customConfig,
+### Icon Customization
+
+Customize dialog icons with different styles and colors:
+
+```dart
+// Download icon with green theme
+final downloadConfig = DialogConfig(
+  icon: Icons.cloud_download,
+  iconColor: Colors.green,
+  iconSize: 72,
+  title: 'Download Update',
+  message: 'New features are ready to download!',
+);
+
+// Security update with warning theme
+final securityConfig = DialogConfig(
+  icon: Icons.security,
+  iconColor: Colors.red,
+  iconSize: 64,
+  title: 'Security Update',
+  message: 'Important security fixes available.',
+);
+
+// Modern rocket launch theme
+final modernConfig = DialogConfig(
+  icon: Icons.rocket_launch,
+  iconColor: Colors.purple,
+  iconSize: 80,
+  title: 'New Features',
+);
+```
+
+### Shape Customization
+
+Create unique dialog shapes for different update scenarios:
+
+```dart
+// Rounded rectangle with colored border
+final borderedConfig = DialogConfig(
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20),
+    side: BorderSide(color: Colors.blue, width: 2),
+  ),
+  icon: Icons.system_update,
+  iconColor: Colors.blue,
+);
+
+// Circular dialog for critical updates
+final circularConfig = DialogConfig(
+  shape: CircleBorder(),
+  padding: EdgeInsets.all(32),
+  icon: Icons.priority_high,
+  iconColor: Colors.orange,
+);
+
+// Stadium shape for modern look
+final stadiumConfig = DialogConfig(
+  shape: StadiumBorder(),
+  icon: Icons.rocket_launch,
+  iconColor: Colors.purple,
+);
+```
+
+### Complete Custom Configuration
+
+```dart
+final fullyCustomConfig = DialogConfig(
+  // Icon customization
+  icon: Icons.cloud_download,
+  iconColor: Colors.green,
+  iconSize: 72,
+
+  // Shape customization
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(16),
+    side: BorderSide(color: Colors.green, width: 2),
+  ),
+
+  // Content and styling
+  title: 'Enhanced Update',
+  message: 'Experience new features with improved performance.',
+  backgroundColor: Colors.green.shade50,
+  titleStyle: TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    color: Colors.green.shade800,
+  ),
+  positiveButtonStyle: ElevatedButton.styleFrom(
+    backgroundColor: Colors.green,
+    foregroundColor: Colors.white,
+  ),
+  elevation: 12,
+  padding: EdgeInsets.all(24),
 );
 ```
 

@@ -130,20 +130,32 @@ The example app is organized into several demonstration screens:
 
 2. **Custom Styling Demo** (`/custom`)
    - Fully customized dialog appearance
-   - Custom colors, fonts, and icons
+   - Custom colors, fonts, and styling
    - Advanced configuration options
 
-3. **Force Update Demo** (`/force`)
+3. **Enhanced Icons & Shapes Demo**
+   - Custom icon configurations with different colors and sizes
+   - Shaped dialogs with borders and custom styling
+   - Download, security, and modern icon themes
+   - Error simulation with custom error dialogs
+
+4. **Modern Circular Design Demo**
+   - Circular and stadium-shaped dialogs
+   - Modern icon themes (rocket launch, priority high)
+   - Advanced shape customization examples
+   - Contemporary UI design patterns
+
+5. **Force Update Demo** (`/force`)
    - Mandatory update scenario
    - Non-dismissible dialog behavior
    - Critical update messaging
 
-4. **Error Handling Demo** (`/error`)
+6. **Error Handling Demo** (`/error`)
    - Network error simulation
    - Retry functionality demonstration
    - Error message customization
 
-5. **API Integration Demo** (`/api`)
+7. **API Integration Demo** (`/api`)
    - Real API endpoint usage
    - Request/response handling
    - Caching behavior demonstration
@@ -176,6 +188,8 @@ final versionChecker = VersionChecker(
 
 ### Custom Dialog Configuration
 
+#### Basic Custom Dialog
+
 ```dart
 final customDialogConfig = DialogConfig(
   title: 'Update Available',
@@ -195,9 +209,92 @@ final customDialogConfig = DialogConfig(
     backgroundColor: Colors.blue,
     foregroundColor: Colors.white,
   ),
-  icon: Icons.system_update,
   barrierDismissible: true,
   showNegativeButton: true,
+);
+```
+
+#### Enhanced Icon & Shape Configuration
+
+```dart
+// Download theme with custom icon and border
+final enhancedConfig = DialogConfig(
+  icon: Icons.cloud_download,
+  iconColor: Colors.green,
+  iconSize: 72,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20),
+    side: BorderSide(color: Colors.green, width: 2),
+  ),
+  title: 'Download Update',
+  message: 'New features are ready to download!',
+  backgroundColor: Colors.green.shade50,
+  titleStyle: TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+    color: Colors.green.shade800,
+  ),
+  positiveButtonStyle: ElevatedButton.styleFrom(
+    backgroundColor: Colors.green,
+    foregroundColor: Colors.white,
+  ),
+  elevation: 12,
+  padding: EdgeInsets.all(24),
+);
+```
+
+#### Modern Circular Design
+
+```dart
+// Circular dialog with modern styling
+final modernConfig = DialogConfig(
+  icon: Icons.rocket_launch,
+  iconColor: Colors.purple,
+  iconSize: 80,
+  shape: CircleBorder(),
+  padding: EdgeInsets.all(32),
+  title: 'New Features',
+  message: 'Experience the latest innovations!',
+  backgroundColor: Colors.purple.shade50,
+  titleStyle: TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: Colors.purple.shade800,
+  ),
+  positiveButtonStyle: ElevatedButton.styleFrom(
+    backgroundColor: Colors.purple,
+    foregroundColor: Colors.white,
+    shape: StadiumBorder(),
+  ),
+  elevation: 16,
+);
+```
+
+#### Security Update Configuration
+
+```dart
+// Security-focused design with warning theme
+final securityConfig = DialogConfig(
+  icon: Icons.security,
+  iconColor: Colors.red,
+  iconSize: 64,
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(16),
+    side: BorderSide(color: Colors.red, width: 2),
+  ),
+  title: 'Security Update Required',
+  message: 'This update contains important security fixes.',
+  backgroundColor: Colors.red.shade50,
+  titleStyle: TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+    color: Colors.red.shade800,
+  ),
+  positiveButtonStyle: ElevatedButton.styleFrom(
+    backgroundColor: Colors.red,
+    foregroundColor: Colors.white,
+  ),
+  elevation: 8,
 );
 ```
 

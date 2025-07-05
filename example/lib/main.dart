@@ -59,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
           fontSize: 16,
           color: Colors.grey,
         ),
+        // ignore: deprecated_member_use_from_same_package
         borderRadius: BorderRadius.all(Radius.circular(16)),
         elevation: 8,
       ),
@@ -79,6 +80,142 @@ class _MyHomePageState extends State<MyHomePage> {
           color: Colors.white70,
         ),
         barrierDismissible: false,
+      ),
+    ),
+  );
+
+  // Enhanced checker with custom icons and shapes
+  late final _enhancedChecker = VersionChecker(
+    config: VersionCheckerConfig(
+      apiUrl: 'https://salawati.smart-fingers.com/api/version/check',
+      timeoutSeconds: 15,
+      updateDialogConfig: DialogConfig(
+        title: 'Fresh Update Available! ✨',
+        message:
+            'Experience new features and improvements in this latest version.',
+        positiveButtonText: 'Download',
+        negativeButtonText: 'Skip',
+        icon: Icons.cloud_download,
+        iconColor: Colors.green,
+        iconSize: 72,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: Colors.green, width: 2),
+        ),
+        backgroundColor: Colors.green.shade50,
+        titleStyle: TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+          color: Colors.green.shade800,
+        ),
+        messageStyle: TextStyle(
+          fontSize: 16,
+          color: Colors.green.shade700,
+        ),
+        elevation: 12,
+      ),
+      forceUpdateDialogConfig: DialogConfig(
+        title: 'Security Update Required',
+        message:
+            'This update contains critical security patches. Update now to stay protected.',
+        positiveButtonText: 'Secure Now',
+        showNegativeButton: false,
+        icon: Icons.security,
+        iconColor: Colors.red.shade700,
+        iconSize: 80,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        backgroundColor: Colors.red.shade50,
+        titleStyle: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.red.shade800,
+        ),
+        messageStyle: TextStyle(
+          fontSize: 16,
+          color: Colors.red.shade700,
+        ),
+        barrierDismissible: false,
+        elevation: 16,
+      ),
+      errorDialogConfig: DialogConfig(
+        title: 'Connection Error',
+        message:
+            'Unable to check for updates. Please verify your internet connection.',
+        positiveButtonText: 'Retry',
+        negativeButtonText: 'Cancel',
+        icon: Icons.wifi_off,
+        iconColor: Colors.orange.shade600,
+        iconSize: 68,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: Colors.orange.shade300, width: 1),
+        ),
+        backgroundColor: Colors.orange.shade50,
+        titleStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.orange.shade800,
+        ),
+        messageStyle: TextStyle(
+          fontSize: 15,
+          color: Colors.orange.shade700,
+        ),
+        elevation: 8,
+      ),
+    ),
+  );
+
+  // Modern circular design checker
+  late final _modernChecker = VersionChecker(
+    config: VersionCheckerConfig(
+      apiUrl: 'https://salawati.smart-fingers.com/api/version/check',
+      timeoutSeconds: 15,
+      updateDialogConfig: DialogConfig(
+        title: 'Update Ready',
+        message: 'A newer version is available with enhanced performance.',
+        positiveButtonText: 'Install',
+        negativeButtonText: 'Later',
+        icon: Icons.rocket_launch,
+        iconColor: Colors.purple,
+        iconSize: 76,
+        shape: const CircleBorder(),
+        backgroundColor: Colors.purple.shade50,
+        titleStyle: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: Colors.purple.shade800,
+        ),
+        messageStyle: TextStyle(
+          fontSize: 16,
+          color: Colors.purple.shade600,
+        ),
+        elevation: 20,
+        padding: const EdgeInsets.all(32),
+      ),
+      forceUpdateDialogConfig: DialogConfig(
+        title: 'Mandatory Update',
+        message: 'This update is required to continue using the application.',
+        positiveButtonText: 'Update',
+        showNegativeButton: false,
+        icon: Icons.priority_high,
+        iconColor: Colors.deepOrange,
+        iconSize: 84,
+        shape: const StadiumBorder(),
+        backgroundColor: Colors.deepOrange.shade50,
+        titleStyle: TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+          color: Colors.deepOrange.shade800,
+        ),
+        messageStyle: TextStyle(
+          fontSize: 16,
+          color: Colors.deepOrange.shade700,
+        ),
+        barrierDismissible: false,
+        elevation: 24,
+        padding: const EdgeInsets.all(28),
       ),
     ),
   );
@@ -187,6 +324,91 @@ class _MyHomePageState extends State<MyHomePage> {
                         foregroundColor: Colors.white,
                       ),
                       child: const Text('Check with Custom Dialogs'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Enhanced Icon & Shape Check
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Enhanced Icons & Shapes',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                        'Check with custom icons, colors, and dialog shapes'),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _isLoading
+                                ? null
+                                : () =>
+                                    _checkVersion(_enhancedChecker, 'Enhanced'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text('Check with Enhanced Dialogs'),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _isLoading
+                                ? null
+                                : () => _simulateError(
+                                    _enhancedChecker, 'Enhanced Error'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.orange,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text('Test Error Dialog'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Modern Circular Design Check
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Modern Circular Design',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                        'Check with circular and stadium-shaped dialogs'),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: _isLoading
+                          ? null
+                          : () => _checkVersion(_modernChecker, 'Modern'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.purple,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Check with Modern Dialogs'),
                     ),
                   ],
                 ),
@@ -365,6 +587,32 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       setState(() {
         _status = 'Error: $e';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _simulateError(VersionChecker checker, String type) async {
+    setState(() {
+      _isLoading = true;
+      _status = 'Simulating error ($type)...';
+    });
+
+    try {
+      // Simulate an error by calling with an invalid URL
+      final errorChecker = VersionChecker(
+        config: checker.config.copyWith(
+          apiUrl: 'https://invalid-url-that-will-fail.com/api/version/check',
+        ),
+      );
+
+      await errorChecker.checkForUpdates(context: context);
+    } catch (e) {
+      setState(() {
+        _status = 'Error simulated: $e';
       });
     } finally {
       setState(() {
