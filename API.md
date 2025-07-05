@@ -2,8 +2,31 @@
 
 This document provides comprehensive API documentation for the version_checker Flutter plugin.
 
+## Installation
+
+Add the plugin to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  version_checker:
+    git:
+      url: https://github.com/aymanalareqi/version_checker.git
+      ref: main
+```
+
+Then run:
+```bash
+flutter pub get
+```
+
+Import in your Dart files:
+```dart
+import 'package:version_checker/version_checker.dart';
+```
+
 ## Table of Contents
 
+- [Installation](#installation)
 - [Core Classes](#core-classes)
 - [Configuration](#configuration)
 - [Models](#models)

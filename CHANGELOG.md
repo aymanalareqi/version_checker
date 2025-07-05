@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Documentation
+- 📚 **Enhanced installation documentation** with GitHub dependency instructions
+- 🔧 **Added comprehensive GitHub installation guide** with multiple installation options
+- 🛠️ **Added troubleshooting section** for GitHub dependency issues
+- 📖 **Updated example app documentation** with GitHub installation steps
+- 🎯 **Added advanced GitHub installation options** (specific commits, branches, SSH)
+- ⚠️ **Added GitHub vs pub.dev comparison** with pros and cons
+- 🔍 **Enhanced API documentation** with installation instructions
+
 ## [1.0.0] - 2025-01-05
 
 ### Added

@@ -18,20 +18,114 @@ A comprehensive Flutter plugin for checking app version updates with customizabl
 
 ## Installation
 
+### Option 1: Install from GitHub (Recommended)
+
+Since this package is not yet published on pub.dev, you can install it directly from the GitHub repository.
+
 Add this to your package's `pubspec.yaml` file:
+
+```yaml
+dependencies:
+  version_checker:
+    git:
+      url: https://github.com/aymanalareqi/version_checker.git
+      ref: main  # Use main branch for latest updates
+```
+
+For a specific version/tag, use:
+
+```yaml
+dependencies:
+  version_checker:
+    git:
+      url: https://github.com/aymanalareqi/version_checker.git
+      ref: v1.0.0  # Replace with desired version tag
+```
+
+### Option 2: Install from pub.dev (Future)
+
+Once published on pub.dev, you can install using:
 
 ```yaml
 dependencies:
   version_checker: ^1.0.0
 ```
 
-Then run:
+### Complete Installation
+
+After adding the dependency, run:
 
 ```bash
 flutter pub get
 ```
 
+### GitHub vs pub.dev Installation Notes
+
+**GitHub Installation:**
+- ✅ Access to latest features and bug fixes
+- ✅ Can specify exact commits or branches
+- ✅ Direct access to unreleased features
+- ⚠️ Dependency resolution may be slower
+- ⚠️ Requires internet access during `flutter pub get`
+- ⚠️ Version constraints work differently
+
+**pub.dev Installation (when available):**
+- ✅ Faster dependency resolution
+- ✅ Better version constraint support
+- ✅ Offline caching support
+- ✅ Semantic versioning compatibility
+
+### Advanced GitHub Installation Options
+
+**Using a specific commit:**
+```yaml
+dependencies:
+  version_checker:
+    git:
+      url: https://github.com/aymanalareqi/version_checker.git
+      ref: abc1234  # Replace with actual commit hash
+```
+
+**Using a specific branch:**
+```yaml
+dependencies:
+  version_checker:
+    git:
+      url: https://github.com/aymanalareqi/version_checker.git
+      ref: develop  # Use develop branch
+```
+
+**Using SSH instead of HTTPS:**
+```yaml
+dependencies:
+  version_checker:
+    git:
+      url: git@github.com:aymanalareqi/version_checker.git
+      ref: main
+```
+
 ## Quick Start
+
+### Setup
+
+1. **Add the dependency** to your `pubspec.yaml`:
+   ```yaml
+   dependencies:
+     version_checker:
+       git:
+         url: https://github.com/aymanalareqi/version_checker.git
+         ref: main
+   ```
+
+2. **Run flutter pub get**:
+   ```bash
+   flutter pub get
+   ```
+
+3. **Import the package** in your Dart files:
+   ```dart
+   import 'package:version_checker/version_checker.dart';
+   ```
 
 ### Basic Usage
 
@@ -284,6 +378,114 @@ Response model for version check results.
 - `Map<String, String>? releaseNotes` - Localized release notes
 - `String? downloadUrl` - Download URL for the update
 - `String? error` - Error message if request failed
+
+## Troubleshooting
+
+### GitHub Installation Issues
+
+**Problem: `flutter pub get` fails with git dependency**
+```
+Git error: Failed to resolve git dependency
+```
+
+**Solutions:**
+1. **Check internet connection** - Git dependencies require internet access
+2. **Verify repository URL** - Ensure the GitHub URL is correct
+3. **Check Git installation** - Make sure Git is installed and accessible
+4. **Try HTTPS instead of SSH** (or vice versa):
+   ```yaml
+   # HTTPS (default)
+   version_checker:
+     git:
+       url: https://github.com/aymanalareqi/version_checker.git
+
+   # SSH (if you have SSH keys set up)
+   version_checker:
+     git:
+       url: git@github.com:aymanalareqi/version_checker.git
+   ```
+
+**Problem: Slow dependency resolution**
+```
+Running "flutter pub get" in project...
+```
+
+**Solutions:**
+1. **Use specific tags instead of branches** for better caching:
+   ```yaml
+   version_checker:
+     git:
+       url: https://github.com/aymanalareqi/version_checker.git
+       ref: v1.0.0  # Use specific version tag
+   ```
+
+2. **Clear Flutter cache** if needed:
+   ```bash
+   flutter clean
+   flutter pub cache clean
+   flutter pub get
+   ```
+
+**Problem: Version conflicts with other dependencies**
+
+**Solutions:**
+1. **Use dependency overrides** in `pubspec.yaml`:
+   ```yaml
+   dependency_overrides:
+     version_checker:
+       git:
+         url: https://github.com/aymanalareqi/version_checker.git
+         ref: main
+   ```
+
+### Runtime Issues
+
+**Problem: Network timeouts**
+
+**Solution:** Increase timeout in configuration:
+```dart
+VersionCheckerConfig(
+  apiUrl: 'your-api-url',
+  timeoutSeconds: 60, // Increase timeout
+)
+```
+
+**Problem: Dialogs not showing**
+
+**Solutions:**
+1. **Ensure context is valid**:
+   ```dart
+   if (mounted && context.mounted) {
+     await versionChecker.checkForUpdates(context: context);
+   }
+   ```
+
+2. **Check showDialogs parameter**:
+   ```dart
+   await versionChecker.checkForUpdates(
+     context: context,
+     showDialogs: true, // Make sure this is true
+   );
+   ```
+
+### API Integration Issues
+
+**Problem: API returns unexpected format**
+
+**Solution:** Verify your API response matches the expected format:
+```json
+{
+  "success": true,
+  "current_version": "1.0.0",
+  "latest_version": "1.1.0",
+  "update_available": true,
+  "force_update": false,
+  "message": "Update available",
+  "download_url": "https://your-download-url"
+}
+```
+
+For more help, please [create an issue](https://github.com/aymanalareqi/version_checker/issues) on GitHub.
 
 ## Contributing
 

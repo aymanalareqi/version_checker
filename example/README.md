@@ -49,9 +49,37 @@ This example app showcases the complete functionality of the version_checker plu
 - Dart SDK (>=3.0.0)
 - iOS Simulator or Android Emulator (or physical device)
 
-### Running the Example
+### Installation Options
 
-1. **Clone the repository** (if not already done):
+#### Option 1: Using the Plugin in Your Own Project
+
+1. **Create a new Flutter project** (or use existing):
+   ```bash
+   flutter create my_version_checker_app
+   cd my_version_checker_app
+   ```
+
+2. **Add the dependency** to your `pubspec.yaml`:
+   ```yaml
+   dependencies:
+     flutter:
+       sdk: flutter
+     version_checker:
+       git:
+         url: https://github.com/aymanalareqi/version_checker.git
+         ref: main  # Use main branch for latest updates
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   flutter pub get
+   ```
+
+4. **Copy example code** from this directory or follow the usage examples in the main README.
+
+#### Option 2: Running the Example App Directly
+
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/aymanalareqi/version_checker.git
    cd version_checker/example
@@ -222,12 +250,43 @@ The example app allows you to test various scenarios:
 
 ## Troubleshooting
 
-### Common Issues
+### GitHub Installation Issues
+
+**Problem: `flutter pub get` fails**
+```
+Because version_checker depends on version_checker from git which doesn't exist, version solving failed.
+```
+
+**Solutions:**
+1. **Check internet connection** - Git dependencies require internet access
+2. **Verify the repository URL** in your `pubspec.yaml`
+3. **Try clearing cache**:
+   ```bash
+   flutter clean
+   flutter pub cache clean
+   flutter pub get
+   ```
+
+**Problem: Slow dependency resolution**
+
+**Solutions:**
+1. **Use a specific version tag** instead of `main`:
+   ```yaml
+   version_checker:
+     git:
+       url: https://github.com/aymanalareqi/version_checker.git
+       ref: v1.0.0
+   ```
+
+2. **Check your internet connection speed**
+
+### Common Runtime Issues
 
 1. **Build Errors**: Make sure you have the latest Flutter SDK
 2. **iOS Signing**: Configure code signing for iOS deployment
 3. **Network Issues**: Check internet connection for API calls
 4. **Platform Issues**: Ensure platform-specific setup is complete
+5. **Git Dependency Issues**: See GitHub installation troubleshooting above
 
 ### Getting Help
 
