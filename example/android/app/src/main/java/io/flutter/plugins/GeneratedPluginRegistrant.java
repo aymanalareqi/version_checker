@@ -26,9 +26,9 @@ public final class GeneratedPluginRegistrant {
       Log.e(TAG, "Error registering plugin shared_preferences_android, io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin", e);
     }
     try {
-      flutterEngine.getPlugins().add(new com.example.version_checker.VersionCheckerPlugin());
+      flutterEngine.getPlugins().add(new com.smartfingers.version_checker.VersionCheckerPlugin());
     } catch (Exception e) {
-      Log.e(TAG, "Error registering plugin version_checker, com.example.version_checker.VersionCheckerPlugin", e);
+      Log.e(TAG, "Error registering plugin version_checker, com.smartfingers.version_checker.VersionCheckerPlugin", e);
     }
   }
 }
