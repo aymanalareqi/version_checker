@@ -11,13 +11,84 @@ import 'widgets/update_dialog.dart';
 import 'widgets/force_update_dialog.dart';
 import 'widgets/error_dialog.dart';
 
-/// Callback function for version check results
+/// Callback function for version check results.
+///
+/// Called when a version check operation completes, providing the
+/// [VersionCheckResponse] with details about the update status.
+///
+/// Example:
+/// ```dart
+/// onResult: (response) {
+///   if (response.updateAvailable) {
+///     print('Update available: ${response.latestVersion}');
+///   }
+/// }
+/// ```
 typedef VersionCheckCallback = void Function(VersionCheckResponse response);
 
-/// Callback function for user actions
+/// Callback function for user actions.
+///
+/// Used for handling user interactions with update dialogs such as
+/// pressing update, later, or dismiss buttons.
+///
+/// Example:
+/// ```dart
+/// onUpdatePressed: () {
+///   // Navigate to app store or handle update
+///   print('User wants to update');
+/// }
+/// ```
 typedef UserActionCallback = void Function();
 
-/// Main plugin class for version checking functionality
+/// Main plugin class for version checking functionality.
+///
+/// The [VersionChecker] class provides a comprehensive solution for checking
+/// app version updates with customizable dialogs and API integration.
+///
+/// Features:
+/// - Automatic version comparison using semantic versioning
+/// - Customizable update dialogs with full styling control
+/// - Built-in caching for improved performance
+/// - Support for force updates and error handling
+/// - Cross-platform support (iOS and Android)
+/// - Localization support for international apps
+///
+/// Basic usage:
+/// ```dart
+/// final versionChecker = VersionChecker(
+///   config: VersionCheckerConfig(
+///     apiUrl: 'https://your-api.com/version/check',
+///   ),
+/// );
+///
+/// await versionChecker.checkForUpdates(
+///   context: context,
+///   showDialogs: true,
+/// );
+/// ```
+///
+/// Advanced usage with custom configuration:
+/// ```dart
+/// final versionChecker = VersionChecker(
+///   config: VersionCheckerConfig(
+///     apiUrl: 'https://your-api.com/version/check',
+///     timeout: Duration(seconds: 30),
+///     enableCaching: true,
+///     cacheExpiration: Duration(hours: 1),
+///     locale: 'en',
+///   ),
+/// );
+///
+/// await versionChecker.checkForUpdates(
+///   context: context,
+///   showDialogs: true,
+///   onUpdatePressed: () => _handleUpdate(),
+///   onLaterPressed: () => _handleLater(),
+///   onError: () => _handleError(),
+/// );
+/// ```
+///
+/// @since 1.0.0
 class VersionChecker {
   static const MethodChannel _channel = MethodChannel('version_checker');
 
@@ -30,7 +101,73 @@ class VersionChecker {
     _service = VersionCheckerService(this.config);
   }
 
-  /// Check for app updates and optionally show dialogs
+  /// Checks for app updates and optionally displays update dialogs.
+  ///
+  /// This method performs a version check against the configured API endpoint
+  /// and can automatically display appropriate dialogs based on the response.
+  ///
+  /// The method will:
+  /// 1. Get the current app version using package_info_plus
+  /// 2. Send a request to the configured API endpoint
+  /// 3. Compare versions using semantic versioning
+  /// 4. Display appropriate dialogs if [showDialogs] is true
+  /// 5. Handle caching if enabled in configuration
+  ///
+  /// Parameters:
+  /// - [context]: Build context required for showing dialogs. If null and
+  ///   [showDialogs] is true, dialogs won't be shown.
+  /// - [showDialogs]: Whether to automatically show update dialogs. Defaults to true.
+  /// - [onResult]: Callback invoked with the version check response.
+  /// - [onUpdatePressed]: Callback invoked when user presses the update button.
+  /// - [onLaterPressed]: Callback invoked when user presses the later button.
+  /// - [onDismissed]: Callback invoked when dialog is dismissed without action.
+  /// - [onError]: Callback invoked when an error occurs during version check.
+  ///
+  /// Returns a [Future<VersionCheckResponse>] containing the version check results.
+  ///
+  /// Throws:
+  /// - [TimeoutException] if the API request times out
+  /// - [SocketException] if there's a network connectivity issue
+  /// - [FormatException] if the API response format is invalid
+  ///
+  /// Example usage:
+  /// ```dart
+  /// // Basic usage with default dialogs
+  /// final response = await versionChecker.checkForUpdates(
+  ///   context: context,
+  /// );
+  ///
+  /// // Advanced usage with callbacks
+  /// final response = await versionChecker.checkForUpdates(
+  ///   context: context,
+  ///   showDialogs: true,
+  ///   onResult: (response) {
+  ///     print('Update available: ${response.updateAvailable}');
+  ///   },
+  ///   onUpdatePressed: () {
+  ///     // Handle update button press
+  ///     _navigateToAppStore();
+  ///   },
+  ///   onLaterPressed: () {
+  ///     // Handle later button press
+  ///     _scheduleReminderLater();
+  ///   },
+  ///   onError: () {
+  ///     // Handle error scenarios
+  ///     _showCustomErrorMessage();
+  ///   },
+  /// );
+  ///
+  /// // Check without showing dialogs
+  /// final response = await versionChecker.checkForUpdates(
+  ///   showDialogs: false,
+  /// );
+  /// if (response.updateAvailable) {
+  ///   // Handle update available manually
+  /// }
+  /// ```
+  ///
+  /// @since 1.0.0
   Future<VersionCheckResponse> checkForUpdates({
     BuildContext? context,
     bool showDialogs = true,

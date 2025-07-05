@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
     config: const VersionCheckerConfig(
       apiUrl: 'https://salawati.smart-fingers.com/api/version/check',
       timeoutSeconds: 15,
-      locale: 'en',
+      locale: 'ar',
       updateDialogConfig: DialogConfig(
         title: 'New Update Available! 🎉',
         message:

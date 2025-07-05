@@ -1,4 +1,55 @@
-/// Response model for version checking API
+/// Response model for version checking API results.
+///
+/// The [VersionCheckResponse] class represents the complete response from
+/// a version check operation, containing all information about the current
+/// app version, available updates, and related metadata.
+///
+/// This class provides:
+/// - Version comparison results (current vs latest)
+/// - Update availability and requirements (optional vs forced)
+/// - Download information and release notes
+/// - Platform-specific details and metadata
+/// - Error handling for failed requests
+///
+/// The response is typically created from API JSON data but can also be
+/// constructed manually for testing or offline scenarios.
+///
+/// Example API response structure:
+/// ```json
+/// {
+///   "success": true,
+///   "current_version": "1.0.0",
+///   "latest_version": "1.2.0",
+///   "update_available": true,
+///   "force_update": false,
+///   "message": "A new version is available!",
+///   "release_notes": {
+///     "en": "• Bug fixes\n• New features",
+///     "ar": "• إصلاح الأخطاء\n• ميزات جديدة"
+///   },
+///   "download_url": "https://play.google.com/store/apps/details?id=com.example.app"
+/// }
+/// ```
+///
+/// Usage example:
+/// ```dart
+/// final response = await versionChecker.checkForUpdates();
+///
+/// if (response.success) {
+///   if (response.updateAvailable) {
+///     print('Update available: ${response.latestVersion}');
+///     if (response.forceUpdate) {
+///       print('This is a mandatory update');
+///     }
+///   } else {
+///     print('App is up to date');
+///   }
+/// } else {
+///   print('Error: ${response.error}');
+/// }
+/// ```
+///
+/// @since 1.0.0
 class VersionCheckResponse {
   /// Whether the request was successful
   final bool success;
