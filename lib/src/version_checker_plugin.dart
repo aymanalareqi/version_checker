@@ -1,0 +1,270 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
+import 'models/version_check_response.dart';
+import 'models/version_checker_config.dart';
+import 'models/dialog_config.dart';
+import 'services/version_checker_service.dart';
+import 'widgets/update_dialog.dart';
+import 'widgets/force_update_dialog.dart';
+import 'widgets/error_dialog.dart';
+
+/// Callback function for version check results
+typedef VersionCheckCallback = void Function(VersionCheckResponse response);
+
+/// Callback function for user actions
+typedef UserActionCallback = void Function();
+
+/// Main plugin class for version checking functionality
+class VersionChecker {
+  static const MethodChannel _channel = MethodChannel('version_checker');
+
+  final VersionCheckerConfig config;
+  late final VersionCheckerService _service;
+
+  VersionChecker({
+    VersionCheckerConfig? config,
+  }) : config = config ?? VersionCheckerConfig.defaultConfig {
+    _service = VersionCheckerService(this.config);
+  }
+
+  /// Check for app updates and optionally show dialogs
+  Future<VersionCheckResponse> checkForUpdates({
+    BuildContext? context,
+    bool showDialogs = true,
+    VersionCheckCallback? onResult,
+    UserActionCallback? onUpdatePressed,
+    UserActionCallback? onLaterPressed,
+    UserActionCallback? onDismissed,
+    UserActionCallback? onError,
+  }) async {
+    try {
+      // Get current app version
+      final packageInfo = await PackageInfo.fromPlatform();
+      final platform = Platform.isIOS ? 'ios' : 'android';
+
+      // Perform version check
+      final response = await _service.checkForUpdates(
+        currentVersion: packageInfo.version,
+        platform: platform,
+        buildNumber: packageInfo.buildNumber,
+        locale: config.locale,
+      );
+
+      // Call result callback
+      onResult?.call(response);
+
+      // Show dialogs if enabled and context is provided
+      if (showDialogs && context != null && config.showDialogs) {
+        await _handleDialogDisplay(
+          context,
+          response,
+          onUpdatePressed: onUpdatePressed,
+          onLaterPressed: onLaterPressed,
+          onDismissed: onDismissed,
+          onError: onError,
+        );
+      }
+
+      return response;
+    } catch (e) {
+      final errorResponse = VersionCheckResponse(
+        success: false,
+        currentVersion: '',
+        platform: Platform.isIOS ? 'ios' : 'android',
+        updateAvailable: false,
+        forceUpdate: false,
+        error: e.toString(),
+      );
+
+      onResult?.call(errorResponse);
+      onError?.call();
+
+      // Show error dialog if enabled
+      if (showDialogs && context != null && config.showDialogs) {
+        await ErrorDialog.show(
+          context,
+          error: e.toString(),
+          config: config.errorDialogConfig,
+          onDismiss: onDismissed,
+        );
+      }
+
+      return errorResponse;
+    }
+  }
+
+  /// Handle dialog display based on response
+  Future<void> _handleDialogDisplay(
+    BuildContext context,
+    VersionCheckResponse response, {
+    UserActionCallback? onUpdatePressed,
+    UserActionCallback? onLaterPressed,
+    UserActionCallback? onDismissed,
+    UserActionCallback? onError,
+  }) async {
+    if (!response.success) {
+      await ErrorDialog.show(
+        context,
+        error: response.error ?? 'Unknown error occurred',
+        config: config.errorDialogConfig,
+        onDismiss: onDismissed,
+      );
+      return;
+    }
+
+    if (!response.updateAvailable) {
+      // No update available - optionally show a message
+      return;
+    }
+
+    if (response.forceUpdate) {
+      await ForceUpdateDialog.show(
+        context,
+        response: response,
+        config: config.forceUpdateDialogConfig,
+        onUpdate: () {
+          onUpdatePressed?.call();
+          _launchStore(response.downloadUrl);
+        },
+      );
+    } else {
+      await UpdateDialog.show(
+        context,
+        response: response,
+        config: config.updateDialogConfig,
+        onUpdate: () {
+          onUpdatePressed?.call();
+          _launchStore(response.downloadUrl);
+        },
+        onLater: onLaterPressed,
+        onDismiss: onDismissed,
+      );
+    }
+  }
+
+  /// Launch app store or download URL
+  Future<void> _launchStore(String? downloadUrl) async {
+    if (downloadUrl == null) return;
+
+    try {
+      // For now, we'll just print the URL
+      // In a real implementation, you would use url_launcher package
+      print('Opening URL: $downloadUrl');
+      // TODO: Implement actual URL launching
+    } catch (e) {
+      // Handle launch error silently or log it
+    }
+  }
+
+  /// Get current app version information
+  static Future<Map<String, String>> getAppVersion() async {
+    try {
+      final result =
+          await _channel.invokeMethod<Map<Object?, Object?>>('getAppVersion');
+      return Map<String, String>.from(result ?? {});
+    } on PlatformException {
+      // Fallback to package_info_plus
+      final packageInfo = await PackageInfo.fromPlatform();
+      return {
+        'version': packageInfo.version,
+        'buildNumber': packageInfo.buildNumber,
+      };
+    }
+  }
+
+  /// Clear cached responses
+  Future<void> clearCache() async {
+    await _service.clearCache();
+  }
+
+  /// Check for updates without showing dialogs
+  Future<VersionCheckResponse> checkForUpdatesQuietly({
+    String? customVersion,
+    String? customPlatform,
+    String? buildNumber,
+    String? locale,
+  }) async {
+    try {
+      String version = customVersion ?? '';
+      String platform = customPlatform ?? '';
+      String? build = buildNumber;
+
+      if (customVersion == null || customPlatform == null) {
+        final packageInfo = await PackageInfo.fromPlatform();
+        version = customVersion ?? packageInfo.version;
+        platform = customPlatform ?? (Platform.isIOS ? 'ios' : 'android');
+        build = buildNumber ?? packageInfo.buildNumber;
+      }
+
+      return await _service.checkForUpdates(
+        currentVersion: version,
+        platform: platform,
+        buildNumber: build,
+        locale: locale ?? config.locale,
+      );
+    } catch (e) {
+      return VersionCheckResponse(
+        success: false,
+        currentVersion: customVersion ?? '',
+        platform: customPlatform ?? '',
+        updateAvailable: false,
+        forceUpdate: false,
+        error: e.toString(),
+      );
+    }
+  }
+
+  /// Show update dialog manually
+  static Future<void> showUpdateDialog(
+    BuildContext context, {
+    required VersionCheckResponse response,
+    DialogConfig? config,
+    UserActionCallback? onUpdate,
+    UserActionCallback? onLater,
+    UserActionCallback? onDismiss,
+  }) async {
+    await UpdateDialog.show(
+      context,
+      response: response,
+      config: config ?? DialogConfig.updateAvailable,
+      onUpdate: onUpdate,
+      onLater: onLater,
+      onDismiss: onDismiss,
+    );
+  }
+
+  /// Show force update dialog manually
+  static Future<void> showForceUpdateDialog(
+    BuildContext context, {
+    required VersionCheckResponse response,
+    DialogConfig? config,
+    UserActionCallback? onUpdate,
+  }) async {
+    await ForceUpdateDialog.show(
+      context,
+      response: response,
+      config: config ?? DialogConfig.forceUpdate,
+      onUpdate: onUpdate,
+    );
+  }
+
+  /// Show error dialog manually
+  static Future<void> showErrorDialog(
+    BuildContext context, {
+    required String error,
+    DialogConfig? config,
+    UserActionCallback? onRetry,
+    UserActionCallback? onDismiss,
+  }) async {
+    await ErrorDialog.show(
+      context,
+      error: error,
+      config: config ?? DialogConfig.error,
+      onRetry: onRetry,
+      onDismiss: onDismiss,
+    );
+  }
+}
