@@ -303,13 +303,34 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     try {
-      final response = await checker.checkForUpdatesQuietly();
+      final response = await checker.checkForUpdates(
+        context: context,
+        showDialogs: true,
+        onResult: (response) {
+          // Update the UI with the response
+          setState(() {
+            _lastResponse = response;
+          });
+        },
+        onUpdatePressed: () {
+          _showSnackBar('Update button pressed! Opening app store...');
+        },
+        onLaterPressed: () {
+          _showSnackBar('Later button pressed. Update postponed.');
+        },
+        onDismissed: () {
+          _showSnackBar('Dialog dismissed.');
+        },
+        onError: () {
+          _showSnackBar('Error occurred during version check.');
+        },
+      );
 
       setState(() {
         _lastResponse = response;
         _status = response.success
             ? (response.updateAvailable
-                ? 'Update available: ${response.latestVersion}'
+                ? 'Update available: ${response.latestVersion} (Dialog shown)'
                 : 'No update available')
             : 'Error: ${response.error}';
       });
